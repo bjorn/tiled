@@ -114,7 +114,10 @@ public:
     int height() const;
     QSize size() const;
 
+    QPoint totalOffset() const;
+
     QPoint offset() const;
+    void setOffset(QPoint offset);
 
     Terrain *terrainAtCorner(int corner) const;
 
@@ -152,6 +155,7 @@ private:
     QVector<Frame> mFrames;
     int mCurrentFrameIndex;
     int mUnusedTime;
+    QPoint mOffset;
 
     friend class Tileset; // To allow changing the tile id
 };
@@ -249,6 +253,22 @@ inline void Tile::setCornerTerrainId(int corner, int terrainId)
 inline unsigned Tile::terrain() const
 {
     return mTerrain;
+}
+
+/**
+ * Returns the offset that is applied when drawing the tile.
+ */
+inline QPoint Tile::offset() const
+{
+    return mOffset;
+}
+
+/**
+ * @see tileOffset
+ */
+inline void Tile::setOffset(QPoint offset)
+{
+    mOffset = offset;
 }
 
 /**

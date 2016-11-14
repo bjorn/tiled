@@ -86,9 +86,9 @@ const QPixmap &Tile::currentFrameImage() const
 /**
  * Returns the drawing offset of the tile (in pixels).
  */
-QPoint Tile::offset() const
+QPoint Tile::totalOffset() const
 {
-    return mTileset->tileOffset();
+    return mTileset->tileOffset() + mOffset;
 }
 
 /**

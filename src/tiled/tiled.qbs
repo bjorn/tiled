@@ -121,6 +121,8 @@ QtGuiApplication {
         "changetileimagesource.h",
         "changetileobjectgroup.cpp",
         "changetileobjectgroup.h",
+        "changetileoffset.cpp",
+        "changetileoffset.h",
         "changetileprobability.cpp",
         "changetileprobability.h",
         "changetileterrain.cpp",

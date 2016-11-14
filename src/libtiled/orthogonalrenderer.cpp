@@ -65,7 +65,7 @@ QRectF OrthogonalRenderer::boundingRect(const MapObject *object) const
         const QPointF bottomLeft = bounds.topLeft();
         const Tile *tile = object->cell().tile;
         const QSize imgSize = tile->image().size();
-        const QPoint tileOffset = tile->offset();
+        const QPoint tileOffset = tile->totalOffset();
         const QSizeF objectSize = object->size();
         const QSizeF scale(objectSize.width() / imgSize.width(), objectSize.height() / imgSize.height());
 
@@ -318,7 +318,7 @@ void OrthogonalRenderer::drawMapObject(QPainter *painter,
         if (testFlag(ShowTileObjectOutlines)) {
             const Tile *tile = cell.tile;
             const QSize imgSize = tile->size();
-            const QPointF tileOffset = tile->offset();
+            const QPointF tileOffset = tile->totalOffset();
             QRectF rect(QPointF(tileOffset.x(),
                                 tileOffset.y() - imgSize.height()),
                         imgSize);

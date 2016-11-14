@@ -69,7 +69,7 @@ QRectF IsometricRenderer::boundingRect(const MapObject *object) const
         const QPointF bottomCenter = pixelToScreenCoords(object->position());
         const Tile *tile = object->cell().tile;
         const QSize imgSize = tile->image().size();
-        const QPoint tileOffset = tile->offset();
+        const QPoint tileOffset = tile->totalOffset();
         const QSizeF objectSize = object->size();
         const QSizeF scale(objectSize.width() / imgSize.width(), objectSize.height() / imgSize.height());
 
@@ -289,7 +289,7 @@ void IsometricRenderer::drawMapObject(QPainter *painter,
         const Tile *tile = cell.tile;
         const QSize imgSize = tile->size();
         const QPointF pos = pixelToScreenCoords(object->position());
-        const QPointF tileOffset = tile->offset();
+        const QPointF tileOffset = tile->totalOffset();
 
         CellRenderer(painter).render(cell, pos, object->size(),
                                      CellRenderer::BottomCenter);

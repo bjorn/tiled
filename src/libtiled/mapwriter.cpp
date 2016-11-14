@@ -332,6 +332,7 @@ void MapWriterPrivate::writeTileset(QXmlStreamWriter &w, const Tileset &tileset,
         const Properties properties = tile->properties();
         unsigned terrain = tile->terrain();
         float probability = tile->probability();
+        QPoint tileoffset = tile->offset();
         ObjectGroup *objectGroup = tile->objectGroup();
 
         if (!properties.isEmpty() || terrain != 0xFFFFFFFF || probability != 1.f || imageSource.isEmpty() || objectGroup || tile->isAnimated()) {
@@ -341,6 +342,10 @@ void MapWriterPrivate::writeTileset(QXmlStreamWriter &w, const Tileset &tileset,
                 w.writeAttribute(QLatin1String("terrain"), makeTerrainAttribute(tile));
             if (probability != 1.f)
                 w.writeAttribute(QLatin1String("probability"), QString::number(probability));
+            if (!tileoffset.isNull()) {
+                w.writeAttribute(QLatin1String("offsetx"), QString::number(tileoffset.x()));
+                w.writeAttribute(QLatin1String("offsety"), QString::number(tileoffset.y()));
+            }
             if (!properties.isEmpty())
                 writeProperties(w, properties);
             if (imageSource.isEmpty()) {
