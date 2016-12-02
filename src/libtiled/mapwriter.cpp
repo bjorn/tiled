@@ -337,7 +337,7 @@ void MapWriterPrivate::writeTileset(QXmlStreamWriter &w, const Tileset &tileset,
         if (!properties.isEmpty() || terrain != 0xFFFFFFFF || probability != 1.f || imageSource.isEmpty() || objectGroup || tile->isAnimated()) {
             w.writeStartElement(QLatin1String("tile"));
             w.writeAttribute(QLatin1String("id"), QString::number(tile->id()));
-            if (terrain != 0xFFFFFFFF)
+            w.writeAttribute(QLatin1String("order"), QString::number(tileset.tileOrder(tile)));
                 w.writeAttribute(QLatin1String("terrain"), makeTerrainAttribute(tile));
             if (probability != 1.f)
                 w.writeAttribute(QLatin1String("probability"), QString::number(probability));

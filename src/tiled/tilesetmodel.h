@@ -118,6 +118,9 @@ public:
      */
     void resetModel();
 
+    bool removeRows(int row, int count, const QModelIndex &parent);
+    Qt::DropActions supportedDropActions() const override;
+
 public slots:
     /**
      * Should be called when anything changes about the given \a tiles that

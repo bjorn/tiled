@@ -104,6 +104,7 @@ SOURCES += aboutdialog.cpp \
     changetileprobability.cpp \
     changeselectedarea.cpp \
     changetileterrain.cpp \
+    changetileorder.cpp \
     clipboardmanager.cpp \
     colorbutton.cpp \
     commandbutton.cpp \
@@ -256,6 +257,7 @@ HEADERS += aboutdialog.h \
     changetileprobability.h \
     changeselectedarea.h \
     changetileterrain.h \
+    changetileorder.h \
     clipboardmanager.h \
     colorbutton.h \
     containerhelpers.h \

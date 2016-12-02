@@ -126,6 +126,8 @@ QtGuiApplication {
         "changetileprobability.h",
         "changetileterrain.cpp",
         "changetileterrain.h",
+        "changetileorder.cpp",
+        "changetileorder.h",
         "clipboardmanager.cpp",
         "clipboardmanager.h",
         "colorbutton.cpp",

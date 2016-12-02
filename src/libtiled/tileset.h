@@ -121,6 +121,11 @@ public:
     inline Tile *findTile(int id) const;
     Tile *tileAt(int id) const { return findTile(id); } // provided for Python
     Tile *findOrCreateTile(int id);
+    void setTileOrder(Tile *tile, int index);
+    void rebuildTileOrder();
+    int tileOrder(const Tile *tile) const;
+    void setOrderedTileset(const QMap<int, Tile*> order);
+    const QMap<int, Tile*> orderedTiles();
     int tileCount() const;
 
     int columnCount() const;
@@ -198,10 +203,12 @@ private:
     int mExpectedColumnCount;
     int mExpectedRowCount;
     QMap<int, Tile*> mTiles;
+    QMultiMap<int, Tile*> mOrderedTiles;
     int mNextTileId;
     QList<Terrain*> mTerrainTypes;
     bool mTerrainDistancesDirty;
     bool mLoaded;
+    bool mNeedsReorder;
 
     QWeakPointer<Tileset> mWeakPointer;
 };

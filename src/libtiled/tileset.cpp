@@ -102,7 +102,101 @@ Tile *Tileset::findOrCreateTile(int id)
         return tile;
 
     mNextTileId = std::max(mNextTileId, id + 1);
-    return mTiles[id] = new Tile(id, this);
+    mTiles[id] = new Tile(id, this);
+    setTileOrder(mTiles[id], id);
+    return mTiles[id];
+}
+
+/**
+ * Sets the tile display order in the TilesetDock.
+ */
+void Tileset::setTileOrder(Tile *tile, int index)
+{
+    // remove tile if it exists
+
+    QMultiMap<int, Tile*>::iterator i = mOrderedTiles.begin();
+    while (i != mOrderedTiles.end())
+    {
+        if (i.value()==tile)
+        {
+            mOrderedTiles.erase(i);
+            break;
+        }
+        else
+            i++;
+    }
+
+    i= mOrderedTiles.insert(index, tile);
+
+    // if another tile has the same index then we need to rebuild
+    if (mOrderedTiles.count(index) > 1)
+        mNeedsReorder= true;
+}
+
+/**
+ * Rebuilds the ordered tile list removing any duplicates.
+ */
+void Tileset::rebuildTileOrder()
+{
+    int index=0;
+    QMultiMap <int, Tile*> newmap;
+    QMultiMap<int, Tile*>::iterator i = mOrderedTiles.begin();
+
+    while (i != mOrderedTiles.end())
+    {
+        newmap.insert(index, i.value());
+        index++;
+        i++;
+    }
+
+    mOrderedTiles= newmap;
+    mNeedsReorder= false;
+}
+
+/**
+ * Returns the order index for a tile.
+ */
+int Tileset::tileOrder(const Tile *tile) const
+{
+    QMultiMap<int, Tile*>::const_iterator i = mOrderedTiles.begin();
+    while (i != mOrderedTiles.end())
+    {
+        if (i.value()==tile)
+            return i.key();
+        i++;
+    }
+
+
+    return -1;
+}
+
+/**
+ * Sets an ordered tileset list for undo
+ */
+void Tileset::setOrderedTileset(const QMap<int, Tile*> order)
+{
+    mOrderedTiles= order;
+    mOrderedTiles.detach();
+}
+
+/**
+ * Retuns an ordered tile list for display in the TilesetDock.
+ */
+const QMap<int, Tile*> Tileset::orderedTiles()
+{
+    if (mNeedsReorder)
+        rebuildTileOrder();
+
+    QMap <int, Tile*> newmap;
+
+    QMultiMap<int, Tile*>::iterator i = mOrderedTiles.begin();
+    while (i != mOrderedTiles.end())
+    {
+        newmap[i.key()]= i.value();
+        i++;
+    }
+
+    return newmap;
 }
 
 /**

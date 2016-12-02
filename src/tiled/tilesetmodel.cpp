@@ -94,7 +94,7 @@ Qt::ItemFlags TilesetModel::flags(const QModelIndex &index) const
     Qt::ItemFlags defaultFlags = QAbstractListModel::flags(index);
 
     if (index.isValid())
-        defaultFlags |= Qt::ItemIsDragEnabled;
+        defaultFlags |= Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
 
     return defaultFlags;
 }
@@ -226,6 +226,20 @@ void TilesetModel::tileChanged(Tile *tile)
 void TilesetModel::refreshTileIds()
 {
     mTileIds.clear();
-    for (Tile *tile : mTileset->tiles())
+
+    for (Tile *tile : mTileset->orderedTiles())
         mTileIds.append(tile->id());
+}
+
+Qt::DropActions TilesetModel::supportedDropActions() const
+{
+    return Qt::CopyAction | Qt::MoveAction;
+}
+
+bool TilesetModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    (void)row;
+    (void)count;
+    (void)parent;
+    return true;
 }

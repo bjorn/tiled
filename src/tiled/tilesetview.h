@@ -123,6 +123,7 @@ protected:
     void leaveEvent(QEvent *) override;
     void wheelEvent(QWheelEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
+    void dropEvent(QDropEvent *) override;
 
 private slots:
     void createNewTerrain();

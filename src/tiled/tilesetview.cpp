@@ -29,6 +29,7 @@
 #include "tilesetmodel.h"
 #include "utils.h"
 #include "zoomable.h"
+#include "changetileorder.h"
 
 #include <QAbstractItemDelegate>
 #include <QCoreApplication>
@@ -42,6 +43,7 @@
 #include <QUndoCommand>
 #include <QWheelEvent>
 #include <QtCore/qmath.h>
+#include <QMimeData>
 
 using namespace Tiled;
 using namespace Tiled::Internal;
@@ -740,4 +742,43 @@ void TilesetView::setHandScrolling(bool handScrolling)
         setCursor(QCursor(Qt::ClosedHandCursor));
     else
         unsetCursor();
+}
+
+void TilesetView::dropEvent(QDropEvent *event)
+{
+    Qt::DropAction action= event->dropAction();
+    if (action == Qt::IgnoreAction)
+        return;
+
+    if (action !=  Qt::MoveAction)
+        return;
+
+    const QString mimeformat= QString::fromUtf8(TILES_MIMETYPE);
+    const QMimeData *data= event->mimeData();
+    if (!data->hasFormat(mimeformat))
+        return;
+
+    if (selectedIndexes().count() != 1)
+        return;
+
+    Tileset *mTileset= tilesetModel()->tileset();
+
+    QUndoStack *undoStack= mMapDocument->undoStack();
+    ChangeTileOrder *command= new ChangeTileOrder(this);
+    undoStack->push(command);
+
+    QByteArray encodedData = data->data(mimeformat);
+    QDataStream stream(&encodedData, QIODevice::ReadOnly);
+    QStringList newItems;
+
+    // currently only supports moving one tile at a time.
+    int srcTileID;
+    stream >> srcTileID;
+    Tile *srcTile= mTileset->findTile(srcTileID);
+    QModelIndex parent= this->indexAt(event->pos());
+    Tile *destTile= tilesetModel()->tileAt(parent);
+    mTileset->setTileOrder(srcTile, mTileset->tileOrder(destTile));
+    tilesetModel()->tilesetChanged();
+
+    event->accept();
 }

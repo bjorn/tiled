@@ -384,6 +384,12 @@ void MapReaderPrivate::readTilesetTile(Tileset &tileset)
 
     Tile *tile = tileset.findOrCreateTile(id);
 
+    // Read tile order
+    QString order = atts.value(QLatin1String("order")).toString();
+    if (!order.isEmpty()) {
+        tileset.setTileOrder(tile, order.toInt());
+    }
+
     // Read tile quadrant terrain ids
     QString terrain = atts.value(QLatin1String("terrain")).toString();
     if (!terrain.isEmpty()) {
