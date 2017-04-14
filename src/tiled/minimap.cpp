@@ -125,7 +125,10 @@ void MiniMap::paintEvent(QPaintEvent *pe)
     p.setPen(Qt::NoPen);
     p.drawRect(contentsRect());
 
-    p.drawImage(mImageRect, mMapImage);
+    p.drawImage(mImageRect,
+      mMapImage.scaled(mImageRect.size(),
+                       Qt::IgnoreAspectRatio,
+                       Qt::SmoothTransformation));
 
     const QRect viewRect = viewportRect();
     p.setBrush(Qt::NoBrush);
@@ -177,11 +180,6 @@ void MiniMap::renderMapToImage()
     }
 
     MapRenderer *renderer = mMapDocument->renderer();
-#if QT_VERSION >= 0x050600
-    const QSize viewSize = contentsRect().size() * devicePixelRatioF();
-#else
-    const QSize viewSize = contentsRect().size() * devicePixelRatio();
-#endif
     QSize mapSize = renderer->mapSize();
 
     if (mapSize.isEmpty()) {
@@ -193,19 +191,10 @@ void MiniMap::renderMapToImage()
     mapSize.setWidth(mapSize.width() + margins.left() + margins.right());
     mapSize.setHeight(mapSize.height() + margins.top() + margins.bottom());
 
-    // Determine the largest possible scale
-    qreal scale = qMin((qreal) viewSize.width() / mapSize.width(),
-                       (qreal) viewSize.height() / mapSize.height());
-
-    // Allocate a new image when the size changed
-    const QSize imageSize = mapSize * scale;
-    if (mMapImage.size() != imageSize) {
-        mMapImage = QImage(imageSize, QImage::Format_ARGB32_Premultiplied);
+    if (mMapImage.size() != mapSize) {
+        mMapImage = QImage(mapSize, QImage::Format_ARGB32_Premultiplied);
         updateImageRect();
     }
-
-    if (imageSize.isEmpty())
-        return;
 
     bool drawObjects = mRenderFlags.testFlag(DrawObjects);
     bool drawTiles = mRenderFlags.testFlag(DrawTiles);
@@ -219,10 +208,7 @@ void MiniMap::renderMapToImage()
 
     mMapImage.fill(Qt::transparent);
     QPainter painter(&mMapImage);
-    painter.setRenderHints(QPainter::SmoothPixmapTransform);
-    painter.setTransform(QTransform::fromScale(scale, scale));
     painter.translate(margins.left(), margins.top());
-    renderer->setPainterScale(scale);
 
     LayerIterator iterator(mMapDocument->map());
     while (const Layer *layer = iterator.next()) {
