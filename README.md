@@ -32,13 +32,21 @@ Compiling
 
 Make sure the Qt (>= 5.6) development libraries are installed:
 
-* In Ubuntu/Debian: `apt-get install qt5-default qttools5-dev-tools zlib1g-dev`
+* In Ubuntu/Debian: `apt-get build-dep tiled`
 * In Fedora:        `sudo dnf builddep tiled`
 * In Arch Linux:    `pacman -S qt`
 * In Mac OS X with [Homebrew](http://brew.sh/):
   + `brew install qt5`
   + `brew link qt5 --force`
 * Or you can download Qt from: https://www.qt.io/download-open-source/
+
+Note that for Ubuntu/Debian, if you have more than one version of Qt
+installed, this will configure `qtchooser` to use Qt 5+ when using tools like
+qmake:
+
+    $ apt-get install qt5-default
+
+Similarly, "installing" `qt4-default` will set the default to Qt 4.
 
 Now you can compile by running:
 
