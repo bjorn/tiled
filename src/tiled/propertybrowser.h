@@ -99,6 +99,7 @@ private slots:
     void tileTypeChanged(Tile *tile);
     void terrainChanged(Tileset *tileset, int index);
     void wangSetChanged(Tileset *tileset, int index);
+    void invertYAxisChanged();
 
     void propertyAdded(Object *object, const QString &name);
     void propertyRemoved(Object *object, const QString &name);

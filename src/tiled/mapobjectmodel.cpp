@@ -29,6 +29,7 @@
 #include "mapdocument.h"
 #include "objectgroup.h"
 #include "renamelayer.h"
+#include "invertyaxishelper.h"
 
 #include <QApplication>
 #include <QPalette>
@@ -135,7 +136,7 @@ QVariant MapObjectModel::data(const QModelIndex &index, int role) const
                 return QLatin1Char('(')
                         + QString::number(mapObject->x())
                         + QLatin1String(", ")
-                        + QString::number(mapObject->y())
+                        + QString::number(InvertYAxisHelper(mapDocument()).tileY(mapObject->y()))
                         + QLatin1Char(')');
             }
             break;

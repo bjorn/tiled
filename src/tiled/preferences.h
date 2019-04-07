@@ -166,6 +166,8 @@ public:
 
     bool wheelZoomsByDefault() const;
 
+    bool invertYAxis() const;
+
     /**
      * Provides access to the QSettings instance to allow storing/retrieving
      * arbitrary values. The naming style for groups and keys is CamelCase.
@@ -189,6 +191,7 @@ public slots:
     void setOpenLastFilesOnStartup(bool load);
     void setPluginEnabled(const QString &fileName, bool enabled);
     void setWheelZoomsByDefault(bool mode);
+    void setInvertYAxis(bool enabled);
 
     void clearRecentFiles();
 
@@ -227,6 +230,8 @@ signals:
     void recentFilesChanged();
 
     void checkForUpdatesChanged();
+
+    void invertYAxisChanged();
 
 private:
     Preferences();
@@ -281,6 +286,7 @@ private:
     bool mIsPatron;
     bool mCheckForUpdates;
     bool mWheelZoomsByDefault;
+    bool mInvertYAxis;
 
     static Preferences *mInstance;
 };
@@ -389,6 +395,11 @@ inline bool Preferences::openLastFilesOnStartup() const
 inline bool Preferences::wheelZoomsByDefault() const
 {
     return mWheelZoomsByDefault;
+}
+
+inline bool Preferences::invertYAxis() const
+{
+    return mInvertYAxis;
 }
 
 } // namespace Tiled

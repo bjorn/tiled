@@ -92,6 +92,7 @@ Preferences::Preferences()
     mLanguage = stringValue("Language");
     mUseOpenGL = boolValue("OpenGL");
     mWheelZoomsByDefault = boolValue("WheelZoomsByDefault");
+    mInvertYAxis = boolValue("InvertYAxis");
     mObjectLabelVisibility = static_cast<ObjectLabelVisiblity>
             (intValue("ObjectLabelVisibility", AllObjectLabels));
     mLabelForHoveredObject = boolValue("LabelForHoveredObject", false);
@@ -680,6 +681,17 @@ void Preferences::setWheelZoomsByDefault(bool mode)
 
     mWheelZoomsByDefault = mode;
     mSettings->setValue(QLatin1String("Interface/WheelZoomsByDefault"), mode);
+}
+
+void Preferences::setInvertYAxis(bool enabled)
+{
+    if (mInvertYAxis == enabled)
+        return;
+
+    mInvertYAxis = enabled;
+    mSettings->setValue(QLatin1String("Interface/InvertYAxis"), enabled);
+
+    emit invertYAxisChanged();
 }
 
 bool Preferences::boolValue(const char *key, bool defaultValue) const

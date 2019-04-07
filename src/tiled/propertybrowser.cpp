@@ -61,6 +61,7 @@
 #include "variantpropertymanager.h"
 #include "wangcolormodel.h"
 #include "wangset.h"
+#include "invertyaxishelper.h"
 
 #include <QtGroupPropertyManager>
 
@@ -100,6 +101,9 @@ PropertyBrowser::PropertyBrowser(QWidget *parent)
 
     connect(Preferences::instance(), &Preferences::objectTypesChanged,
             this, &PropertyBrowser::objectTypesChanged);
+    
+    connect(Preferences::instance(), &Preferences::invertYAxisChanged,
+            this, &PropertyBrowser::invertYAxisChanged);
 }
 
 void PropertyBrowser::setObject(Object *object)
@@ -318,6 +322,12 @@ void PropertyBrowser::terrainChanged(Tileset *tileset, int index)
 void PropertyBrowser::wangSetChanged(Tileset *tileset, int index)
 {
     if (mObject == tileset->wangSet(index))
+        updateProperties();
+}
+
+void PropertyBrowser::invertYAxisChanged()
+{
+    if (mObject && mObject->typeId() == Object::MapObjectType)
         updateProperties();
 }
 
@@ -1018,7 +1028,7 @@ QUndoCommand *PropertyBrowser::applyMapObjectValueTo(PropertyId id, const QVaria
     }
     case YProperty: {
         const QPointF oldPos = mapObject->position();
-        const QPointF newPos(oldPos.x(), val.toReal());
+        const QPointF newPos(oldPos.x(), InvertYAxisHelper(mMapDocument).pixelY(val.toReal()));
         command = new MoveMapObject(mMapDocument, mapObject, newPos, oldPos);
         break;
     }
@@ -1606,7 +1616,7 @@ void PropertyBrowser::updateProperties()
         if (auto visibleProperty = mIdToProperty[VisibleProperty])
             visibleProperty->setValue(mapObject->isVisible());
         mIdToProperty[XProperty]->setValue(mapObject->x());
-        mIdToProperty[YProperty]->setValue(mapObject->y());
+        mIdToProperty[YProperty]->setValue(InvertYAxisHelper(mMapDocument).pixelY(mapObject->y()));
 
         if (flags & ObjectHasDimensions) {
             mIdToProperty[WidthProperty]->setValue(mapObject->width());

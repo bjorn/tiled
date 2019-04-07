@@ -28,6 +28,7 @@
 #include "tile.h"
 #include "tilelayer.h"
 #include "tilestamp.h"
+#include "invertyaxishelper.h"
 
 #include <QtMath>
 
@@ -145,7 +146,7 @@ void AbstractTileTool::updateStatusInfo()
 
         setStatusInfo(QString(QLatin1String("%1, %2 [%3]"))
                       .arg(mTilePosition.x())
-                      .arg(mTilePosition.y())
+                      .arg(InvertYAxisHelper(mapDocument()).tileY(mTilePosition.y()))
                       .arg(tileIdString));
     } else {
         setStatusInfo(QString());

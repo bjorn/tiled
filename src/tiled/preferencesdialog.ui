@@ -225,6 +225,13 @@
             </property>
            </widget>
           </item>
+          <item row="7" column="0">
+            <widget class="QCheckBox" name="invertYAxis">
+             <property name="text">
+                <string>Invert Y axis coordinates</string>
+             </property>
+            </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -441,6 +448,7 @@
   <tabstop>objectLineWidth</tabstop>
   <tabstop>openGL</tabstop>
   <tabstop>wheelZoomsByDefault</tabstop>
+  <tabstop>invertYAxis</tabstop>
   <tabstop>styleCombo</tabstop>
   <tabstop>baseColor</tabstop>
   <tabstop>selectionColor</tabstop>
