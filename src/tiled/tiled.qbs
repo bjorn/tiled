@@ -13,7 +13,7 @@ QtGuiApplication {
     Depends { name: "qtpropertybrowser" }
     Depends { name: "qtsingleapplication" }
     Depends { name: "ib"; condition: qbs.targetOS.contains("macos") }
-    Depends { name: "Qt"; submodules: ["core", "widgets", "qml"]; versionAtLeast: "5.6" }
+    Depends { name: "Qt"; submodules: ["core", "widgets", "qml", "xml"]; versionAtLeast: "5.6" }
 
     property bool qtcRunnable: true
 
@@ -430,6 +430,8 @@ QtGuiApplication {
         "scriptmanager.h",
         "scriptmodule.cpp",
         "scriptmodule.h",
+        "scriptxmlfile.cpp",
+        "scriptxmlfile.h",
         "selectionrectangle.cpp",
         "selectionrectangle.h",
         "selectsametiletool.cpp",

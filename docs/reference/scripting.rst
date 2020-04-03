@@ -1832,3 +1832,111 @@ BinaryFile.commit() : void
 BinaryFile.close() : void
     Closes the file. It is recommended to always call this function as soon as
     you are finished with the file.
+
+XmlFile
+~~~~~~~
+
+Inherits :ref:`script-xml-node`
+
+**Functions**
+
+new XmlFile(text : string)
+    Creates a new Xml document by parsing `text`.
+
+XmlFile.createNode(type : NodeType [, data : string = ""]) : XmlNode
+    Creates a new node attached to this document. The new node is not in the element
+    tree until it's been added somewhere. `data` is the initial value of XmlNode.text.
+    `type` cannot be NodeType.Root or NodeType.Other.
+
+XmlFile.writeToString(indent : int = 1) : string
+    Returns this XML document represented as a string.
+
+XmlNode
+~~~~~~~~~~
+
+**Properties**
+
+.. csv-table::
+    :widths: 1, 2
+
+    **type** : NodeType |ro|, The type of this node
+    **attributes** : object |ro|, A copy of the attributes on this Element
+    **children** : [XmlNode] |ro|, A copy of the list of all the direct children of this Element or Root.
+    **text** : string, "The meaning of this depends on the *type*. For an element, this is equivalent to the *tag*. For a text node, this is the plain text. For a CDATA node, it's the data as a string."
+    **tag** : string, The tag name of this Element
+    **parent** : XmlNode |ro|, The direct parent of this node
+    **hasAttributes** : bool |ro|, True if this Element has at least one attribute
+    **hasChildren** : bool |ro|, True if this Element or Root has at least one direct child node
+    **root** : XmlFile |ro|, The XML file this node belongs to
+
+.. csv-table::
+    :header: XmlNode.NodeType
+    :widths: 1, 2
+
+    XmlNode.Element, A normal element in xml
+    XmlNode.Text, Text inside an element or between elements
+    XmlNode.CDATA, A `<![CDATA[ ... ]]>` section
+    XmlNode.Root, The document itself
+    XmlNode.Other, "Other xml constructs, like comments and processing commands"
+
+**Functions**
+
+XmlNode.clear() : void
+    Deletes this node's list of children, removes itself from its parent, and it sets
+    its type to NodeType.Unknown. The node cannot be reused after this operation.
+
+XmlNode.attribute(name : string [, defaultValue : string = ""]) : string
+    Gets the attribute with the given name. If the named attribute does not exist,
+    it returns defaultValue instead. Throws an error if this node is not an Element.
+
+XmlNode.setAttribute(name : string, newValue : string) : void
+    Set the attribute with the given name to a new value, creating it if it
+    didn't already exist. Throws an error if this node is not an Element.
+
+XmlNode.hasAttribute(name : string) : bool
+    Returns whether this node has an attribute with the given name. Throws an
+    error if this node is not an Element.
+
+XmlNode.removeAttribute(name : string) : void
+    Removes the attribute with the given name from this element. Throws an error
+    if this node is not an Element.
+
+XmlNode.firstChild([tag : string]) : XmlNode
+    Returns the first child with the given tag name. Returns `undefined` if the
+    child can't be found or this node has no children.
+
+XmlNode.lastChild([tag : string]) : XmlNode
+    Returns the last child with the given tag name. Returns `undefined` if the
+    child can't be found or this node has no children.
+
+XmlNode.previousSibling([tag : string]) : XmlNode
+    Returns the previous sibling of this node. Returns `undefined` if this is the
+    first sibling or if there is no parent node.
+
+XmlNode.nextSibling([tag : string]) : XmlNode
+    Returns the next sibling of this node. Returns `undefined` if this is the last
+    sibling or if there is no parent node.
+
+XmlNode.appendChild(XmlNode newChild) : XmlNode
+    Appends the child node to this one and returns it. Returns `undefined` if the
+    operation failed. Note that the returned node might be different from newChild
+    in some cases.
+
+XmlNode.insertBefore(XmlNode newChild, XmlNode referenceChild) : XmlNode
+    Puts the child node before the referenceChild node. Returns `undefined` if the
+    operation failed. Note that the returned node might be different from newChild
+    in some cases.
+
+XmlNode.insertAfter(XmlNode newChild, XmlNode referenceChild) : XmlNode
+    Puts the child node after the referenceChild node. Returns `undefined` if the
+    operation failed. Note that the returned node might be different from newChild
+    in some cases.
+
+XmlNode.replaceChild(XmlNode newChild, XmlNode oldChild) : XmlNode
+    Puts the child in the same spot as the old one, and returns the new child.
+    Returns `undefined` if the operation failed. Note that the returned node might
+    be different from newChild in some cases.
+
+XmlNode.removeChild(XmlNode oldChild) : XmlNode
+    Removes the child from this node, and returns it. Returns `undefined` if the
+    operation failed.

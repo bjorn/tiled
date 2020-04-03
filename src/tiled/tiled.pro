@@ -13,7 +13,7 @@ win32 {
     DESTDIR = ../../bin
 }
 
-QT += widgets qml
+QT += widgets qml xml
 
 DEFINES += TILED_VERSION=$${TILED_VERSION}
 
@@ -214,6 +214,7 @@ SOURCES += aboutdialog.cpp \
     scriptfileformatwrappers.cpp \
     scriptmanager.cpp \
     scriptmodule.cpp \
+    scriptxmlfile.cpp \
     selectionrectangle.cpp \
     selectsametiletool.cpp \
     session.cpp \
@@ -454,6 +455,7 @@ HEADERS += aboutdialog.h \
     scriptfileformatwrappers.h \
     scriptmanager.h \
     scriptmodule.h \
+    scriptxmlfile.h \
     selectionrectangle.h \
     selectsametiletool.h \
     session.h \
