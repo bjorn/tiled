@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/maps">
+        <file>mapobject.tmx</file>
+    </qresource>
+</RCC>
