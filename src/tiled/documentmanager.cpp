@@ -726,13 +726,13 @@ bool DocumentManager::saveDocumentAs(Document *document)
             {
                 QMessageBox messageBox(QMessageBox::Warning,
                                        QCoreApplication::translate("Tiled::MainWindow", "Extension Mismatch"),
-                                       QCoreApplication::translate("Tiled::MainWindow", "The file extension does not match the chosen file type."),
+                                       QCoreApplication::translate("Tiled::MainWindow", "Are you sure you want to save with this extension?"),
                                        QMessageBox::Yes | QMessageBox::No,
                                        mWidget->window());
 
                 messageBox.setInformativeText(QCoreApplication::translate("Tiled::MainWindow",
-                                                                          "Tiled may not automatically recognize your file when loading. "
-                                                                          "Are you sure you want to save with this extension?"));
+                                                                          "The file extension does not match the chosen file type. "
+                                                                          "Tiled may not automatically recognize your file when loading."));
 
                 int answer = messageBox.exec();
                 if (answer != QMessageBox::Yes)
