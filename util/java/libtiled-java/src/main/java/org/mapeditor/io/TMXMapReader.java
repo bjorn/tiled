@@ -841,6 +841,7 @@ public class TMXMapReader {
         for (int i = 0; (item = l.item(i)) != null; i++) {
             int firstGid = getAttribute(item, "firstgid", 1);
             TileSet tileset = unmarshalTileset(item);
+            tileset.setFirstgid(firstGid);
             tilesetPerFirstGid.put(firstGid, tileset);
             map.addTileset(tileset);
         }

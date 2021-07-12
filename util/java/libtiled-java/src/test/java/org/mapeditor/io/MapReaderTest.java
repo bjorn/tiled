@@ -8,13 +8,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -35,8 +35,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import org.mapeditor.core.Map;
@@ -81,6 +83,15 @@ public class MapReaderTest {
     public void testReadingSewersMapJar() throws Exception {
         Map map = new TMXMapReader().readMap(getJarURL("sewers/sewers.tmx"));
         checkSewersMap(map);
+    }
+
+    @Test
+    public void testMultiTileset() throws Exception {
+        final Map map = new TMXMapReader().readMap(getJarURL("multi-tileset/desert.tmx"));
+        final List<TileSet> tilesets = map.getTileSets();
+        assertEquals(2, tilesets.size());
+        assertEquals(Integer.valueOf(1), tilesets.get(0).getFirstgid());
+        assertEquals(Integer.valueOf(49), tilesets.get(1).getFirstgid());
     }
 
     private void checkSewersMap(final Map map) {
