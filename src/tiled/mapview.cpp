@@ -647,6 +647,46 @@ void MapView::mouseMoveEvent(QMouseEvent *event)
         break;
     }
 
+    if (event->buttons() & Qt::LeftButton) {
+        auto *hBar = static_cast<FlexibleScrollBar*>(horizontalScrollBar());
+        auto *vBar = static_cast<FlexibleScrollBar*>(verticalScrollBar());
+
+        QPoint pos = event->pos();
+        QRectF mRect = viewport()->rect();
+
+        int horizontalValue = 0,  verticalValue = 0;
+
+        if ((pos.x() + 5) > mRect.width()) {
+            horizontalValue = hBar->value() + 5;
+            cursor().setPos(mLastMousePos - *(new QPoint(5, 0)));
+        }
+
+        if ((pos.x() - 5) < 0) {
+            horizontalValue = hBar->value() + (hBar->value() <= 0? 0 : -5);
+            cursor().setPos(mLastMousePos + *(new QPoint(5, 0)));
+        }
+
+        if ((pos.y() + 5) > mRect.height()) {
+            verticalValue = vBar->value() + 5;
+            cursor().setPos(mLastMousePos - *(new QPoint(0, 5)));
+        }
+
+        if ((pos.y() - 5) < 0) {
+            verticalValue = vBar->value() + (vBar->value() <= 0 ? 0 : -5);
+            cursor().setPos(mLastMousePos + *(new QPoint(0, 5)));
+        }
+
+        if (horizontalValue) {
+            hBar->forceSetValue(horizontalValue);
+        }
+
+        if (verticalValue) {
+            vBar->forceSetValue(verticalValue);
+        }
+
+    }
+
+
     QGraphicsView::mouseMoveEvent(event);
     mLastMousePos = event->globalPos();
     mLastMouseScenePos = mapToScene(viewport()->mapFromGlobal(mLastMousePos));
